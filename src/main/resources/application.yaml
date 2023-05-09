@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: MySpringBoot
+  datasource:
+    url: jdbc:postgresql://localhost:49153/postgres
+    username: postgres
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
