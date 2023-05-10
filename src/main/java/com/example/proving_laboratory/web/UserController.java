@@ -165,7 +165,7 @@ public class UserController {
         if (user.getAuthorities().contains(Role.ADMIN)
                 || user.getAuthorities().contains(Role.SERVICE_ENGINEER)
                 || user.getAuthorities().contains(Role.AUDITOR)) {
-            clientList = clientService.findAllEquipment();
+            clientList = clientService.findAllClient();
         } else {
             UUID departmentId = user.getDepartment().getId();
             clientList = clientService.findClientOfDepartment(departmentId);
@@ -174,143 +174,143 @@ public class UserController {
         return "clientList";
     }
 
-    @GetMapping("/selectProcess")
-    public String selectProcess(Model model, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        User user = userService.findUserByUsername(username).get();
-        List<Client> clientList;
-        if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
-            clientList = clientService.findAllClient();
-        } else {
-            UUID departmentId = user.getDepartment().getId();
-            clientList = clientService.findFreeClientOfDepartment(departmentId);
-        }
-        model.addAttribute("clientList", clientList);
-        model.addAttribute("processDto", new ProcessDto());
-        return "user/startProcess";
-    }
-
-    @PostMapping("/selectProcess")
-    public String selectProcess(@Valid @ModelAttribute ProcessDto processDto, BindingResult bindingResult, HttpSession httpSession) {
-        if (bindingResult.hasErrors()) {
-            return "user/startProcess";
-        }
-        httpSession.setAttribute("clientQrCodeList", processDto.getClientQrCodes());
-        return "redirect:/user/" + processDto.getProcessType();
-    }
-
-    @GetMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model) {
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        model.addAttribute("clientList", clientList);
-        return "process/cleaning";
-    }
-
-    @PostMapping("/cleaning")
-    public String cleaningProcess(@Valid @ModelAttribute CleaningProcessDto cleaningProcessDto, BindingResult bindingResult,
-                                  HttpSession httpSession, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "process/cleaning";
-        }
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        httpSession.removeAttribute("clientQrCodeList");
-        String username = request.getRemoteUser();
-        Optional<User> userByUsername = userService.findUserByUsername(username);
-        assert clientList != null;
-        CleaningProcess cleaningProcess = clientService.startCleaningProcess(userByUsername.get(), clientList, cleaningProcessDto);
-        Optional<AbstractProcess> process = clientService.saveProcess(cleaningProcess);
-        model.addAttribute("processType", "cleaning");
-        model.addAttribute("process", process.get());
-        return "process/inProcess";
-    }
-
-    @GetMapping("/production")
-    public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model) {
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        model.addAttribute("equipmentList", clientList);
-        return "process/production";
-    }
-
-    @PostMapping("/production")
-    public String productionProcess(@Valid @ModelAttribute ProductionProcessDto productionProcessDto, BindingResult bindingResult,
-                                    HttpSession httpSession, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "process/production";
-        }
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        httpSession.removeAttribute("clientQrCodeList");
-        String username = request.getRemoteUser();
-        Optional<User> userByUsername = userService.findUserByUsername(username);
-        assert clientList != null;
-        ProductionProcess productionProcess = clientService.startProductionProcess(userByUsername.get(), clientList, productionProcessDto);
-        Optional<AbstractProcess> process = clientService.saveProcess(productionProcess);
-        model.addAttribute("processType", "production");
-        model.addAttribute("process", process.get());
-        return "process/inProcess";
-    }
-
-    @GetMapping("/maintenance")
-    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto, HttpSession httpSession, Model model) {
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        model.addAttribute("clientList", clientList);
-        return "process/maintenance";
-    }
-
-    @PostMapping("/maintenance")
-    public String maintenanceService(@Valid @ModelAttribute MaintenanceServiceDto maintenanceServiceDto, BindingResult bindingResult,
-                                     HttpSession httpSession, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "process/maintenance";
-        }
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        httpSession.removeAttribute("clientQrCodeList");
-        String username = request.getRemoteUser();
-        Optional<User> userByUsername = userService.findUserByUsername(username);
-        assert clientList != null;
-        MaintenanceService maintenanceService = processService.startMaintenanceService(userByUsername.get(), clientList, maintenanceServiceDto);
-        Optional<AbstractProcess> process = processService.saveProcess(maintenanceService);
-        model.addAttribute("processType", "maintenance");
-        model.addAttribute("process", process.get());
-        return "process/inProcess";
-    }
-
-    @GetMapping("/qualification")
-    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model) {
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        model.addAttribute("clientList", clientList);
-        return "process/qualification";
-    }
-
-    @PostMapping("/qualification")
-    public String qualificationProcess(@Valid @ModelAttribute QualificationProcessDto qualificationProcessDto, BindingResult bindingResult,
-                                       HttpSession httpSession, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "process/qualification";
-        }
-        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
-        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
-        httpSession.removeAttribute("clientQrCodeList");
-        String username = request.getRemoteUser();
-        Optional<User> userByUsername = userService.findUserByUsername(username);
-        assert clientList != null;
-        QualificationProcess qualificationProcess = processService.startQualificationProcess(userByUsername.get(), clientList, qualificationProcessDto);
-        Optional<AbstractProcess> process = processService.saveProcess(qualificationProcess);
-        model.addAttribute("processType", "qualification");
-        model.addAttribute("process", process.get());
-        return "process/inProcess";
-    }
-
-    @GetMapping("/stopProcess")
-    public String stopProcess(@RequestParam String equipmentQrCode) {
-        processService.stopProcess(equipmentQrCode);
-        return "redirect:/";
-    }
+//    @GetMapping("/selectProcess")
+//    public String selectProcess(Model model, HttpServletRequest request) {
+//        String username = request.getRemoteUser();
+//        User user = userService.findUserByUsername(username).get();
+//        List<Client> clientList;
+//        if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+//            clientList = clientService.findAllClient();
+//        } else {
+//            UUID departmentId = user.getDepartment().getId();
+//            clientList = clientService.findFreeClientOfDepartment(departmentId);
+//        }
+//        model.addAttribute("clientList", clientList);
+//        model.addAttribute("processDto", new ProcessDto());
+//        return "user/startProcess";
+//    }
+//
+//    @PostMapping("/selectProcess")
+//    public String selectProcess(@Valid @ModelAttribute ProcessDto processDto, BindingResult bindingResult, HttpSession httpSession) {
+//        if (bindingResult.hasErrors()) {
+//            return "user/startProcess";
+//        }
+//        httpSession.setAttribute("clientQrCodeList", processDto.getClientQrCodes());
+//        return "redirect:/user/" + processDto.getProcessType();
+//    }
+//
+//    @GetMapping("/cleaning")
+//    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model) {
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        model.addAttribute("clientList", clientList);
+//        return "process/cleaning";
+//    }
+//
+//    @PostMapping("/cleaning")
+//    public String cleaningProcess(@Valid @ModelAttribute CleaningProcessDto cleaningProcessDto, BindingResult bindingResult,
+//                                  HttpSession httpSession, Model model, HttpServletRequest request) {
+//        if (bindingResult.hasErrors()) {
+//            return "process/cleaning";
+//        }
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        httpSession.removeAttribute("clientQrCodeList");
+//        String username = request.getRemoteUser();
+//        Optional<User> userByUsername = userService.findUserByUsername(username);
+//        assert clientList != null;
+//        CleaningProcess cleaningProcess = clientService.startCleaningProcess(userByUsername.get(), clientList, cleaningProcessDto);
+//        Optional<AbstractProcess> process = clientService.saveProcess(cleaningProcess);
+//        model.addAttribute("processType", "cleaning");
+//        model.addAttribute("process", process.get());
+//        return "process/inProcess";
+//    }
+//
+//    @GetMapping("/production")
+//    public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model) {
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        model.addAttribute("equipmentList", clientList);
+//        return "process/production";
+//    }
+//
+//    @PostMapping("/production")
+//    public String productionProcess(@Valid @ModelAttribute ProductionProcessDto productionProcessDto, BindingResult bindingResult,
+//                                    HttpSession httpSession, Model model, HttpServletRequest request) {
+//        if (bindingResult.hasErrors()) {
+//            return "process/production";
+//        }
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        httpSession.removeAttribute("clientQrCodeList");
+//        String username = request.getRemoteUser();
+//        Optional<User> userByUsername = userService.findUserByUsername(username);
+//        assert clientList != null;
+//        ProductionProcess productionProcess = clientService.startProductionProcess(userByUsername.get(), clientList, productionProcessDto);
+//        Optional<AbstractProcess> process = clientService.saveProcess(productionProcess);
+//        model.addAttribute("processType", "production");
+//        model.addAttribute("process", process.get());
+//        return "process/inProcess";
+//    }
+//
+//    @GetMapping("/maintenance")
+//    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto, HttpSession httpSession, Model model) {
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        model.addAttribute("clientList", clientList);
+//        return "process/maintenance";
+//    }
+//
+//    @PostMapping("/maintenance")
+//    public String maintenanceService(@Valid @ModelAttribute MaintenanceServiceDto maintenanceServiceDto, BindingResult bindingResult,
+//                                     HttpSession httpSession, Model model, HttpServletRequest request) {
+//        if (bindingResult.hasErrors()) {
+//            return "process/maintenance";
+//        }
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        httpSession.removeAttribute("clientQrCodeList");
+//        String username = request.getRemoteUser();
+//        Optional<User> userByUsername = userService.findUserByUsername(username);
+//        assert clientList != null;
+//        MaintenanceService maintenanceService = processService.startMaintenanceService(userByUsername.get(), clientList, maintenanceServiceDto);
+//        Optional<AbstractProcess> process = processService.saveProcess(maintenanceService);
+//        model.addAttribute("processType", "maintenance");
+//        model.addAttribute("process", process.get());
+//        return "process/inProcess";
+//    }
+//
+//    @GetMapping("/qualification")
+//    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model) {
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        model.addAttribute("clientList", clientList);
+//        return "process/qualification";
+//    }
+//
+//    @PostMapping("/qualification")
+//    public String qualificationProcess(@Valid @ModelAttribute QualificationProcessDto qualificationProcessDto, BindingResult bindingResult,
+//                                       HttpSession httpSession, Model model, HttpServletRequest request) {
+//        if (bindingResult.hasErrors()) {
+//            return "process/qualification";
+//        }
+//        List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
+//        List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
+//        httpSession.removeAttribute("clientQrCodeList");
+//        String username = request.getRemoteUser();
+//        Optional<User> userByUsername = userService.findUserByUsername(username);
+//        assert clientList != null;
+//        QualificationProcess qualificationProcess = processService.startQualificationProcess(userByUsername.get(), clientList, qualificationProcessDto);
+//        Optional<AbstractProcess> process = processService.saveProcess(qualificationProcess);
+//        model.addAttribute("processType", "qualification");
+//        model.addAttribute("process", process.get());
+//        return "process/inProcess";
+//    }
+//
+//    @GetMapping("/stopProcess")
+//    public String stopProcess(@RequestParam String equipmentQrCode) {
+//        processService.stopProcess(equipmentQrCode);
+//        return "redirect:/";
+//    }
 
 }

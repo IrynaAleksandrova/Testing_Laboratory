@@ -28,7 +28,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "O_TYPE")
 @Table(name = "control")
-public abstract class AbstractControl {
+public abstract class AbstractObjectControl {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -38,9 +38,9 @@ public abstract class AbstractControl {
     )
     private UUID id;
 
-    private String UNP_code;
+    private String nameClient;
 
-    private String address;
+    private String production;
 
     private String qrCode;
 

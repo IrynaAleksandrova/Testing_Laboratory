@@ -1,6 +1,6 @@
 package com.example.proving_laboratory.service.impl;
 
-import com.example.proving_laboratory.entity.AbstractControl;
+import com.example.proving_laboratory.entity.AbstractObjectControl;
 import com.example.proving_laboratory.entity.Client;
 import com.example.proving_laboratory.entity.Department;
 import com.example.proving_laboratory.exception.ClientNotFoundException;
@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
         if (!controlRepository.existsById(client.getId())) {
             Client saveClient = controlRepository.save(client);
             departmentService.updateDepartmentWithClient(saveClient.getDepartment().getId(), saveClient);
-            log.info("save client " + saveClient.getNameApplicant());
+            log.info("save client " + saveClient.getNameClient());
             return Optional.of(saveClient);
         } else {
             throw new SaveException();
@@ -43,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
     public Optional<Client> updateClient(Client client) {
         if (controlRepository.existsById(client.getId())) {
             Client updateClient = controlRepository.save(client);
-            log.info("update client " + updateClient.getNameApplicant());
+            log.info("update client " + updateClient.getNameClient());
             return Optional.of(updateClient);
         } else {
             throw new ClientNotFoundException();
@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(UUID id) {
-        Optional<AbstractControl> clientById = controlRepository.findById(id);
+        Optional<AbstractObjectControl> clientById = controlRepository.findById(id);
         controlRepository.deleteById(id);
         Department department = clientById.get().getDepartment();
         department.getClientList().remove(clientById.get());

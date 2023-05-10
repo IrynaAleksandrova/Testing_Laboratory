@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,11 +14,8 @@ import java.time.LocalDate;
 @Builder
 
 @Entity
-@DiscriminatorValue("CQ")
-public class Client extends AbstractObjectControl {
+@DiscriminatorValue("EP")
+public class ExtraditionProcess extends AbstractProcess{
 
-    private String inventoryNumber;
-
-    private LocalDate completionDate;
-
+    String extraditionInstruction;
 }
