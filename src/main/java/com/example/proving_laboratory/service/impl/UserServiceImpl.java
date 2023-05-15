@@ -1,11 +1,13 @@
 package com.example.proving_laboratory.service.impl;
 
 import com.example.proving_laboratory.dto.UserDto;
+import com.example.proving_laboratory.entity.Department;
 import com.example.proving_laboratory.entity.Role;
 import com.example.proving_laboratory.entity.User;
 import com.example.proving_laboratory.exception.SaveException;
 import com.example.proving_laboratory.mapper.UserMapper;
 import com.example.proving_laboratory.repository.UserRepository;
+import com.example.proving_laboratory.service.DepartmentService;
 import com.example.proving_laboratory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
     private final UserRepository userRepository;
+    private final DepartmentService departmentService;
     private final UserMapper userMapper;
 
 
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(encoder.encode(user.getPassword()));
             User saveUser = userRepository.save(user);
             log.info(saveUser.getFirstName() + " " + saveUser.getSecondName() + " was saved");
-//            departmentService.updateDepartmentWithEmployee(saveUser.getDepartment().getId(), saveUser);
+            departmentService.updateDepartmentWithEmployee(saveUser.getDepartment().getId(), saveUser);
             return Optional.of(saveUser);
         } else {
             throw new SaveException();
@@ -95,9 +98,9 @@ public class UserServiceImpl implements UserService {
     public void deleteEmployee(UUID id) {
         Optional<User> userById = userRepository.findById(id);
         userRepository.deleteById(id);
-//        Department department = userById.get().getDepartment();
-//        department.getEmployees().remove(userById.get());
-//        departmentService.updateDepartment(department);
+        Department department = userById.get().getDepartment();
+        department.getEmployees().remove(userById.get());
+        departmentService.updateDepartment(department);
     }
 
     @Override

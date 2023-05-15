@@ -9,9 +9,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExtraditionDto {
+public class ProductionProcessDto {
 
     @NotBlank
-    private String extraditionInstruction;
+    private String productName;
 
 }

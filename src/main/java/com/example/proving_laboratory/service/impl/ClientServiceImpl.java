@@ -5,7 +5,7 @@ import com.example.proving_laboratory.entity.Client;
 import com.example.proving_laboratory.entity.Department;
 import com.example.proving_laboratory.exception.ClientNotFoundException;
 import com.example.proving_laboratory.exception.SaveException;
-import com.example.proving_laboratory.repository.ControlRepository;
+import com.example.proving_laboratory.repository.ControlObjectRepository;
 import com.example.proving_laboratory.service.ClientService;
 import com.example.proving_laboratory.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @Slf4j
 public class ClientServiceImpl implements ClientService {
 
-    private final ControlRepository controlRepository;
+    private final ControlObjectRepository controlRepository;
     private final DepartmentService departmentService;
 
     @Override

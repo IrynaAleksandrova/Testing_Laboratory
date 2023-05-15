@@ -17,5 +17,12 @@ public class AbstractProcessDto {
     private String cleaningEquipment;
     private String procedure;
     private String extraditionInstruction;
+    private String productName;
+
+    public AbstractProcessDto(LocalDateTime processStart, LocalDateTime processEnd, User employee) {
+        this.processStart = processStart;
+        this.processEnd = processEnd;
+        this.employee = employee;
+    }
 
 }

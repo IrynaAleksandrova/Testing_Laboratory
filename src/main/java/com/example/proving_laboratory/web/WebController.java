@@ -1,9 +1,11 @@
 package com.example.proving_laboratory.web;
 
+import com.example.proving_laboratory.dto.AbstractProcessDto;
 import com.example.proving_laboratory.entity.Client;
 import com.example.proving_laboratory.entity.Role;
 import com.example.proving_laboratory.entity.User;
 import com.example.proving_laboratory.service.ClientService;
+import com.example.proving_laboratory.service.ProcessService;
 import com.example.proving_laboratory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ public class WebController {
 
     private final UserService userService;
     private final ClientService clientService;
-//    private final ProcessService processService;
+    private final ProcessService processService;
 
     @GetMapping
     public String startPage(Model model) {
@@ -66,8 +68,8 @@ public class WebController {
     public String showClientLog(String clientQr, Model model) {
         Optional<Client> clientByQrCode = clientService.findClientByQrCode(clientQr);
         clientByQrCode.ifPresent(client -> model.addAttribute("client", client));
-//        List<AbstractProcessDto> processListByClient = processService.findProcessListByClient(clientQr);
-//        model.addAttribute("processList", processListByClient);
+        List<AbstractProcessDto> processListByClient = processService.findProcessListByClient(clientQr);
+        model.addAttribute("processList", processListByClient);
         return "clientLog";
     }
 }

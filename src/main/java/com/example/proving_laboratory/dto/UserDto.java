@@ -18,8 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserDto {
 
-    private UUID id;
-
     @NotBlank
     @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String username;

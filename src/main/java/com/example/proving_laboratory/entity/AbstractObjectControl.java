@@ -28,19 +28,13 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "O_TYPE")
 @Table(name = "control")
-public abstract class AbstractObjectControl {
-
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
+public abstract class AbstractObjectControl extends AbstractEntity{
 
     private String nameClient;
 
     private String production;
+
+    private String internalCode;
 
     private String qrCode;
 

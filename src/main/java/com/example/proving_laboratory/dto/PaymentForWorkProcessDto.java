@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ExtraditionDto {
-
+@NoArgsConstructor
+public class PaymentForWorkProcessDto {
     @NotBlank
-    private String extraditionInstruction;
-
+    private String proofOfPayment;
 }
