@@ -14,8 +14,8 @@ import javax.persistence.Entity;
 @Builder
 
 @Entity
-@DiscriminatorValue("EP")
-public class ExtraditionProcess extends AbstractProcess{
+@DiscriminatorValue("DP")
+public class DeliveryReportProcess extends AbstractProcess{
 
-    String extraditionInstruction;
+    String deliveryReport;
 }

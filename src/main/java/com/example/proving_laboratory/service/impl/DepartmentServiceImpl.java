@@ -59,7 +59,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void updateDepartmentWithClient(UUID departmentId, Client client) {
         Optional<Department> departmentById = departmentRepository.findById(departmentId);
         Department department = departmentById.get();
-//        department.getClientList().add(client);
+        department.getClientList().add(client);
         log.info("update department " + department.getName());
         departmentRepository.save(department);
     }

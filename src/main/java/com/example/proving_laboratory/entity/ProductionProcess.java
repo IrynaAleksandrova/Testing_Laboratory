@@ -19,4 +19,6 @@ public class ProductionProcess extends AbstractProcess{
 
     private String productName;
 
+    private String seriesNumber;
+
 }

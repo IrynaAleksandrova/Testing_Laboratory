@@ -2,7 +2,7 @@ package com.example.proving_laboratory.web;
 
 import com.example.proving_laboratory.dto.CleaningProcessDto;
 import com.example.proving_laboratory.dto.ClientDto;
-import com.example.proving_laboratory.dto.ExtraditionDto;
+import com.example.proving_laboratory.dto.DeliveryDto;
 import com.example.proving_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.proving_laboratory.dto.ProcessDto;
 import com.example.proving_laboratory.dto.ProductionProcessDto;
@@ -10,8 +10,8 @@ import com.example.proving_laboratory.dto.UserDto;
 import com.example.proving_laboratory.entity.AbstractProcess;
 import com.example.proving_laboratory.entity.CleaningProcess;
 import com.example.proving_laboratory.entity.Client;
+import com.example.proving_laboratory.entity.DeliveryReportProcess;
 import com.example.proving_laboratory.entity.Department;
-import com.example.proving_laboratory.entity.ExtraditionProcess;
 import com.example.proving_laboratory.entity.PaymentForWorkProcess;
 import com.example.proving_laboratory.entity.ProductionProcess;
 import com.example.proving_laboratory.entity.Role;
@@ -264,19 +264,19 @@ public class UserController {
         return "process/inProcess";
     }
 
-    @GetMapping("/extradition")
-    public String extraditionProcess(@ModelAttribute ExtraditionDto extraditionDto, HttpSession httpSession, Model model) {
+    @GetMapping("/delivery_report")
+    public String extraditionProcess(@ModelAttribute DeliveryDto deliveryDto, HttpSession httpSession, Model model) {
         List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
         List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
         model.addAttribute("clientList", clientList);
-        return "process/extradition";
+        return "process/delivery_report";
     }
 
-    @PostMapping("/extradition")
-    public String extraditionProcess(@Valid @ModelAttribute ExtraditionDto extraditionDto, BindingResult bindingResult,
+    @PostMapping("/delivery_report")
+    public String extraditionProcess(@Valid @ModelAttribute DeliveryDto deliveryDto, BindingResult bindingResult,
                                      HttpSession httpSession, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            return "process/extradition";
+            return "process/delivery_report";
         }
         List<String> clientQrCodeList = (List<String>) httpSession.getAttribute("clientQrCodeList");
         List<Client> clientList = clientService.findListOfInternalCodes(clientQrCodeList);
@@ -284,9 +284,9 @@ public class UserController {
         String username = request.getRemoteUser();
         Optional<User> userByUsername = userService.findUserByUsername(username);
         assert clientList != null;
-        ExtraditionProcess extraditionProcess = processService.startExtraditionProcess(userByUsername.get(), clientList, extraditionDto);
-        Optional<AbstractProcess> process = processService.saveProcess(extraditionProcess);
-        model.addAttribute("processType", "extradition");
+        DeliveryReportProcess deliveryReportProcess = processService.startDeliveryReportProcess(userByUsername.get(), clientList, deliveryDto);
+        Optional<AbstractProcess> process = processService.saveProcess(deliveryReportProcess);
+        model.addAttribute("processType", "delivery_report");
         model.addAttribute("process", process.get());
         return "process/inProcess";
     }

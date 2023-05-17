@@ -2,13 +2,13 @@ package com.example.proving_laboratory.service;
 
 import com.example.proving_laboratory.dto.AbstractProcessDto;
 import com.example.proving_laboratory.dto.CleaningProcessDto;
-import com.example.proving_laboratory.dto.ExtraditionDto;
+import com.example.proving_laboratory.dto.DeliveryDto;
 import com.example.proving_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.proving_laboratory.dto.ProductionProcessDto;
 import com.example.proving_laboratory.entity.AbstractProcess;
 import com.example.proving_laboratory.entity.CleaningProcess;
 import com.example.proving_laboratory.entity.Client;
-import com.example.proving_laboratory.entity.ExtraditionProcess;
+import com.example.proving_laboratory.entity.DeliveryReportProcess;
 import com.example.proving_laboratory.entity.PaymentForWorkProcess;
 import com.example.proving_laboratory.entity.ProductionProcess;
 import com.example.proving_laboratory.entity.User;
@@ -25,7 +25,7 @@ public interface ProcessService {
 
     ProductionProcess startProductionProcess(User employee, List<Client> clients, @Valid ProductionProcessDto productionProcessDto);
 
-    ExtraditionProcess startExtraditionProcess(User employee, List<Client> clients, @Valid ExtraditionDto extraditionDto);
+    DeliveryReportProcess startDeliveryReportProcess(User employee, List<Client> clients, @Valid DeliveryDto deliveryDto);
 
     PaymentForWorkProcess checkPaymentForWorkProcess(User employee, List<Client> clients, PaymentForWorkProcessDto paymentForWorkProcessDto);
 

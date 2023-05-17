@@ -27,21 +27,21 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "O_TYPE")
-@Table(name = "control")
+@Table(name = "control_object")
 public abstract class AbstractObjectControl extends AbstractEntity{
 
     private String nameClient;
 
-    private String production;
+    private String qrCode;
 
     private String internalCode;
 
-    private String qrCode;
-
-    private LocalDate deliveryDate;
+    private String production;
 
     @ManyToOne
     private Department department;
+
+    private LocalDate lastPaymentDate;
 
     @Enumerated(EnumType.STRING)
     private ObjectStatus objectStatus;

@@ -20,6 +20,6 @@ public class Client extends AbstractObjectControl {
 
     private String inventoryNumber;
 
-    private LocalDate completionDate;
+    private LocalDate lastDeliveryDate;
 
 }

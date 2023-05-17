@@ -14,4 +14,7 @@ public class ProductionProcessDto {
     @NotBlank
     private String productName;
 
+    @NotBlank
+    private String seriesNumber;
+
 }

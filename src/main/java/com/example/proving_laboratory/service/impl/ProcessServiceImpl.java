@@ -2,13 +2,13 @@ package com.example.proving_laboratory.service.impl;
 
 import com.example.proving_laboratory.dto.AbstractProcessDto;
 import com.example.proving_laboratory.dto.CleaningProcessDto;
-import com.example.proving_laboratory.dto.ExtraditionDto;
+import com.example.proving_laboratory.dto.DeliveryDto;
 import com.example.proving_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.proving_laboratory.dto.ProductionProcessDto;
 import com.example.proving_laboratory.entity.AbstractProcess;
 import com.example.proving_laboratory.entity.CleaningProcess;
 import com.example.proving_laboratory.entity.Client;
-import com.example.proving_laboratory.entity.ExtraditionProcess;
+import com.example.proving_laboratory.entity.DeliveryReportProcess;
 import com.example.proving_laboratory.entity.PaymentForWorkProcess;
 import com.example.proving_laboratory.entity.ProductionProcess;
 import com.example.proving_laboratory.entity.User;
@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,13 +65,13 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public ExtraditionProcess startExtraditionProcess(User employee, List<Client> clients, ExtraditionDto extraditionDto) {
-        ExtraditionProcess extraditionProcess = processMapper.convertExtraditionDtoToExtraditionProcess(extraditionDto);
-        setClientListToStartProcess(extraditionProcess, clients);
-        extraditionProcess.setEmployee(employee);
-        extraditionProcess.setProcessStart(LocalDateTime.now());
-        log.info("extradition process start");
-        return extraditionProcess;
+    public DeliveryReportProcess startDeliveryReportProcess(User employee, List<Client> clients, DeliveryDto deliveryDto) {
+        DeliveryReportProcess deliveryReportProcess = processMapper.convertDeliveryDtoToDeliveryReportProcess(deliveryDto);
+        setClientListToStartProcess(deliveryReportProcess, clients);
+        deliveryReportProcess.setEmployee(employee);
+        deliveryReportProcess.setProcessStart(LocalDateTime.now());
+        log.info("delivery report process start");
+        return deliveryReportProcess;
     }
 
     public PaymentForWorkProcess checkPaymentForWorkProcess(User employee, List<Client> clients, PaymentForWorkProcessDto paymentForWorkProcessDto) {
@@ -93,11 +92,11 @@ public class ProcessServiceImpl implements ProcessService {
         Optional<Client> clientByQrCode = clientService.findClientByQrCode(clientQrCode);
         Client client= clientByQrCode.get();
         client.setProcess(false);
-        if (processByClient instanceof ExtraditionProcess) {
-            client.setCompletionDate(LocalDate.now());
+        if (processByClient instanceof DeliveryReportProcess) {
+            client.setLastDeliveryDate(LocalDate.now());
         }
         if (processByClient instanceof PaymentForWorkProcess) {
-            client.setDeliveryDate(LocalDate.now());
+            client.setLastPaymentDate(LocalDate.now());
         }
         clientService.updateClient(clientByQrCode.get());
     }

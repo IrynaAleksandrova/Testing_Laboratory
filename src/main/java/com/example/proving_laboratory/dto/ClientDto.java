@@ -20,8 +20,8 @@ public class ClientDto {
     private String nameClient;
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z]{3,16}")
-    private String production;
+    @Pattern(regexp = ".{3,16}")
+    private String qrCode;
 
     @NotBlank
     @Pattern(regexp = ".{3,10}")
@@ -32,17 +32,18 @@ public class ClientDto {
     private String inventoryNumber;
 
     @NotBlank
-    @Pattern(regexp = ".{3,16}")
-    private String qrCode;
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
+    private String production;
+
 
     @NotNull
     private Department department;
 
     @NotNull
-    private String deliveryDate;
+    private String lastPaymentDate;
 
     @NotNull
-    private String completionDate;
+    private String lastDeliveryDate;
 
     @NotNull
     private ObjectStatus objectStatus;
