@@ -1,12 +1,17 @@
-server:
-  port: 8081
 spring:
   application:
-    name: MySpringBoot
+    name: Testing_Laboratory
+  liquibase:
+    enabled: false
+  thymeleaf:
+    cache: false
   datasource:
-    url: jdbc:postgresql://localhost:49153/postgres
+    driver-class-name: org.postgresql.Driver
     username: postgres
     password:
+    url: jdbc:postgresql://localhost:49153/postgres
   jpa:
     hibernate:
       ddl-auto: create-drop
+    database: postgresql
+    show-sql: true
