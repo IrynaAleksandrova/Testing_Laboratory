@@ -5,11 +5,11 @@ import com.example.testing_laboratory.dto.CleaningProcessDto;
 import com.example.testing_laboratory.dto.DeliveryDto;
 import com.example.testing_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.testing_laboratory.dto.ProductionProcessDto;
-import com.example.testing_laboratory.entity.AbstractProcess;
 import com.example.testing_laboratory.entity.CleaningProcess;
 import com.example.testing_laboratory.entity.Client;
 import com.example.testing_laboratory.entity.DeliveryReportProcess;
 import com.example.testing_laboratory.entity.PaymentForWorkProcess;
+import com.example.testing_laboratory.entity.Process;
 import com.example.testing_laboratory.entity.ProductionProcess;
 import com.example.testing_laboratory.entity.User;
 import com.example.testing_laboratory.exception.ProcessException;
@@ -29,11 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class ProcessServiceImpl implements ProcessService {
 
     private final ProcessRepository processRepository;
@@ -41,7 +40,7 @@ public class ProcessServiceImpl implements ProcessService {
     private final ClientService clientService;
 
     @Override
-    public Optional<AbstractProcess> saveProcess(AbstractProcess process) {
+    public Optional<Process> saveProcess(Process process) {
         return Optional.of(processRepository.save(process));
     }
 
@@ -85,12 +84,12 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public void stopProcess(String clientQrCode) {
-        AbstractProcess processByClient = findProcessByClient(clientQrCode);
+        Process processByClient = findProcessByClient(clientQrCode);
         processByClient.setProcessEnd(LocalDateTime.now());
         saveProcess(processByClient);
         log.info("stop process");
         Optional<Client> clientByQrCode = clientService.findClientByQrCode(clientQrCode);
-        Client client= clientByQrCode.get();
+        Client client = clientByQrCode.get();
         client.setProcess(false);
         if (processByClient instanceof DeliveryReportProcess) {
             client.setLastDeliveryDate(LocalDate.now());
@@ -103,9 +102,9 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public List<AbstractProcessDto> findProcessListByClient(String clientQrCode) {
-        List<AbstractProcess> allProcesses = processRepository.findAll();
+        List<Process> allProcesses = processRepository.findAll();
         List<AbstractProcessDto> clientProcess = new ArrayList<>();
-        for (AbstractProcess process : allProcesses) {
+        for (Process process : allProcesses) {
             List<Client> client = process.getClient();
             for (Client e : client) {
                 if (e.getQrCode().equals(clientQrCode)) {
@@ -118,7 +117,7 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public void setClientListToStartProcess(AbstractProcess process, List<Client> clients) {
+    public void setClientListToStartProcess(Process process, List<Client> clients) {
         process.setClient(new ArrayList<>());
         for (Client client : clients) {
             List<AbstractProcessDto> processListByClient = findProcessListByClient(client.getQrCode());
@@ -139,9 +138,9 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public AbstractProcess findProcessByClient(String clientQrCode) {
-        List<AbstractProcess> unfinishedProcesses = processRepository.findUnfinishedProcesses();
-        for (AbstractProcess process : unfinishedProcesses) {
+    public Process findProcessByClient(String clientQrCode) {
+        List<Process> unfinishedProcesses = processRepository.findUnfinishedProcesses();
+        for (Process process : unfinishedProcesses) {
             List<Client> client = process.getClient();
             for (Client e : client) {
                 if (e.getQrCode().equals(clientQrCode)) {

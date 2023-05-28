@@ -16,7 +16,6 @@ import javax.validation.constraints.Pattern;
 public class ClientDto {
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String nameClient;
 
     @NotBlank
@@ -34,7 +33,6 @@ public class ClientDto {
     @NotBlank
     @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String production;
-
 
     @NotNull
     private Department department;

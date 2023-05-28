@@ -1,4 +1,4 @@
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add client</title>
@@ -16,9 +16,9 @@
             <form th:action="@{/user/addClient}" th:object="${clientDto}" method="post">
                 <div class="mb-3">
                     <label for="clientName" class="form-label"> Client's name: </label>
-                    <input type="text" th:field="*{name}" placeholder="Client's name" class="form-control"
+                    <input type="text" th:field="*{nameClient}" placeholder="Client's name" class="form-control"
                            id="clientName"/>
-                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                    <p th:if="${#fields.hasErrors('nameClient')}" th:errors="*{nameClient}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="clientQrCode" class="form-label"> Client's qr-code: </label>
@@ -65,11 +65,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="clientLastDeliveryDate" class="form-label"> Client's last delivery date: </label>
-                    <input type="date" th:field="*{lastDeliveryDat}"
+                    <input type="date" th:field="*{lastDeliveryDate}"
                            placeholder="Client's last delivery date" class="form-control"
                            id="clientLastDeliveryDate"/>
-                    <p th:if="${#fields.hasErrors('lastDeliveryDat')}"
-                       th:errors="*{lastDeliveryDat}"></p>
+                    <p th:if="${#fields.hasErrors('lastDeliveryDate')}"
+                       th:errors="*{lastDeliveryDate}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="statusSelect"> Select client's status: </label>

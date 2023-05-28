@@ -5,9 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
 @Slf4j
-public class ErrorController {
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
     @ExceptionHandler(RuntimeException.class)
     public String error(RuntimeException e, Model model) {
         log.error(e.getMessage());

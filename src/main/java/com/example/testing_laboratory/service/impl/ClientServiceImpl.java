@@ -1,6 +1,6 @@
 package com.example.testing_laboratory.service.impl;
 
-import com.example.testing_laboratory.entity.AbstractObjectControl;
+import com.example.testing_laboratory.entity.ObjectControl;
 import com.example.testing_laboratory.entity.Client;
 import com.example.testing_laboratory.entity.Department;
 import com.example.testing_laboratory.exception.ClientNotFoundException;
@@ -17,11 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
-
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
     private final ControlObjectRepository controlRepository;
@@ -79,7 +78,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(UUID id) {
-        Optional<AbstractObjectControl> clientById = controlRepository.findById(id);
+        Optional<ObjectControl> clientById = controlRepository.findById(id);
         controlRepository.deleteById(id);
         Department department = clientById.get().getDepartment();
         department.getClientList().remove(clientById.get());

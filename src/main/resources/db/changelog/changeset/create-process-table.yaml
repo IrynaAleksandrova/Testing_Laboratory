@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-process
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: process
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: P_TYPE
+                  type: varchar(50)
+              - column:
+                  name: process_start
+                  type: TIMESTAMP
+              - column:
+                  name: process_end
+                  type: TIMESTAMP
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: process_employee_id_users_id
+                    references: users(id)
+              - column:
+                  name: cleaning_equipment
+                  type: varchar (200)
+              - column:
+                  name: procedure
+                  type: varchar (200)
+              - column:
+                  name: delivery_report
+                  type: varchar (200)
+              - column:
+                  name: product_name
+                  type: varchar (200)
+              - column:
+                  name: series_number
+                  type: varchar (50)
+              - column:
+                  name: proof_of_payment
+                  type: varchar (500)

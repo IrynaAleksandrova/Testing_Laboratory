@@ -7,12 +7,12 @@ import com.example.testing_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.testing_laboratory.dto.ProcessDto;
 import com.example.testing_laboratory.dto.ProductionProcessDto;
 import com.example.testing_laboratory.dto.UserDto;
-import com.example.testing_laboratory.entity.AbstractProcess;
 import com.example.testing_laboratory.entity.CleaningProcess;
 import com.example.testing_laboratory.entity.Client;
 import com.example.testing_laboratory.entity.DeliveryReportProcess;
 import com.example.testing_laboratory.entity.Department;
 import com.example.testing_laboratory.entity.PaymentForWorkProcess;
+import com.example.testing_laboratory.entity.Process;
 import com.example.testing_laboratory.entity.ProductionProcess;
 import com.example.testing_laboratory.entity.Role;
 import com.example.testing_laboratory.entity.User;
@@ -132,7 +132,7 @@ public class UserController {
         User currentUser = userService.findUserByUsername(username).get();
         List<Department> departments = departmentService.findDepartmentList(currentUser);
         model.addAttribute("departments", departments);
-        model.addAttribute("equipmentDto", new ClientDto());
+        model.addAttribute("clientDto", new ClientDto());
         return "user/addClient";
     }
 
@@ -231,7 +231,7 @@ public class UserController {
         Optional<User> userByUsername = userService.findUserByUsername(username);
         assert clientList != null;
         CleaningProcess cleaningProcess = processService.startCleaningProcess(userByUsername.get(), clientList, cleaningProcessDto);
-        Optional<AbstractProcess> process = processService.saveProcess(cleaningProcess);
+        Optional<Process> process = processService.saveProcess(cleaningProcess);
         model.addAttribute("processType", "cleaning");
         model.addAttribute("process", process.get());
         return "process/inProcess";
@@ -258,7 +258,7 @@ public class UserController {
         Optional<User> userByUsername = userService.findUserByUsername(username);
         assert clientList != null;
         ProductionProcess productionProcess = processService.startProductionProcess(userByUsername.get(), clientList, productionProcessDto);
-        Optional<AbstractProcess> process = processService.saveProcess(productionProcess);
+        Optional<Process> process = processService.saveProcess(productionProcess);
         model.addAttribute("processType", "production");
         model.addAttribute("process", process.get());
         return "process/inProcess";
@@ -285,7 +285,7 @@ public class UserController {
         Optional<User> userByUsername = userService.findUserByUsername(username);
         assert clientList != null;
         DeliveryReportProcess deliveryReportProcess = processService.startDeliveryReportProcess(userByUsername.get(), clientList, deliveryDto);
-        Optional<AbstractProcess> process = processService.saveProcess(deliveryReportProcess);
+        Optional<Process> process = processService.saveProcess(deliveryReportProcess);
         model.addAttribute("processType", "delivery_report");
         model.addAttribute("process", process.get());
         return "process/inProcess";
@@ -301,7 +301,7 @@ public class UserController {
 
     @PostMapping("/payment")
     public String paymentForWorkProcess(@Valid @ModelAttribute PaymentForWorkProcessDto paymentForWorkProcessDto, BindingResult bindingResult,
-                                       HttpSession httpSession, Model model, HttpServletRequest request) {
+                                        HttpSession httpSession, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "process/payment";
         }
@@ -312,7 +312,7 @@ public class UserController {
         Optional<User> userByUsername = userService.findUserByUsername(username);
         assert clientList != null;
         PaymentForWorkProcess paymentForWorkProcess = processService.checkPaymentForWorkProcess(userByUsername.get(), clientList, paymentForWorkProcessDto);
-        Optional<AbstractProcess> process = processService.saveProcess(paymentForWorkProcess);
+        Optional<Process> process = processService.saveProcess(paymentForWorkProcess);
         model.addAttribute("processType", "payment");
         model.addAttribute("process", process.get());
         return "process/inProcess";

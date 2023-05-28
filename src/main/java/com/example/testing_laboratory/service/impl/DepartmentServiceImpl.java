@@ -17,11 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
-
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;

@@ -1,8 +1,8 @@
 package com.example.testing_laboratory.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CollectionTable;
@@ -19,13 +19,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "P_TYPE")
 @Table(name = "process")
-public abstract class AbstractProcess extends AbstractEntity{
+@DiscriminatorColumn(name = "P_TYPE")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Process extends AbstractBaseId {
 
     private LocalDateTime processStart;
 

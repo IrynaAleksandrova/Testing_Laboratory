@@ -22,18 +22,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@RequiredArgsConstructor
-
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
     private final UserRepository userRepository;
     private final DepartmentService departmentService;
     private final UserMapper userMapper;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -72,7 +70,6 @@ public class UserServiceImpl implements UserService {
             throw new SaveException();
         }
     }
-
 
     @Override
     public Optional<User> findUserByUsername(String username) {
@@ -113,6 +110,5 @@ public class UserServiceImpl implements UserService {
             employeeList = findEmployeesOfDepartment(user.getDepartment().getId());
         }
         return employeeList;
-
     }
 }

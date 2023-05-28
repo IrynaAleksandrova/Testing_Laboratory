@@ -5,7 +5,7 @@ import com.example.testing_laboratory.dto.CleaningProcessDto;
 import com.example.testing_laboratory.dto.DeliveryDto;
 import com.example.testing_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.testing_laboratory.dto.ProductionProcessDto;
-import com.example.testing_laboratory.entity.AbstractProcess;
+import com.example.testing_laboratory.entity.Process;
 import com.example.testing_laboratory.entity.CleaningProcess;
 import com.example.testing_laboratory.entity.Client;
 import com.example.testing_laboratory.entity.DeliveryReportProcess;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public interface ProcessService {
 
-    Optional<AbstractProcess> saveProcess(AbstractProcess process);
+    Optional<Process> saveProcess(Process process);
 
     CleaningProcess startCleaningProcess(User employee, List<Client> clients, CleaningProcessDto cleaningProcessDto);
 
@@ -33,8 +33,8 @@ public interface ProcessService {
 
     List<AbstractProcessDto> findProcessListByClient(String clientQrCode);
 
-    void setClientListToStartProcess(AbstractProcess process, List<Client> clients);
+    void setClientListToStartProcess(Process process, List<Client> clients);
 
-    AbstractProcess findProcessByClient(String clientQrCode);
+    Process findProcessByClient(String clientQrCode);
 
 }

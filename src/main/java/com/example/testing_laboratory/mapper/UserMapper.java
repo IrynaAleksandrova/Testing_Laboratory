@@ -5,7 +5,7 @@ import com.example.testing_laboratory.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MapperConfig;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     User convertUserDtoToUser(UserDto userDto);

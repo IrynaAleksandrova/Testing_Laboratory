@@ -1,17 +1,25 @@
 spring:
+  mail:
+    allow-bean-definition-overriding: true
   application:
     name: Testing_Laboratory
-  liquibase:
-    enabled: false
+#  liquibase:
+#    enabled: false
   thymeleaf:
     cache: false
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password:
-    url: jdbc:postgresql://localhost:49153/postgres
+    url: jdbc:postgresql://localhost:32768/testing_laboratory
   jpa:
     hibernate:
       ddl-auto: create-drop
     database: postgresql
     show-sql: true
+
+#  datasource:
+#    url: jdbc:h2:mem:db
+#  h2:
+#    console:
+#      enabled: true

@@ -1,8 +1,8 @@
 package com.example.testing_laboratory.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorColumn;
@@ -18,13 +18,13 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "O_TYPE")
 @Table(name = "control_object")
-public abstract class AbstractObjectControl extends AbstractEntity{
+@DiscriminatorColumn(name = "O_TYPE")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class ObjectControl extends AbstractBaseId {
 
     private String nameClient;
 

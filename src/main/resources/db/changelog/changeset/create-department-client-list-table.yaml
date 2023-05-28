@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-department-client-list
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: department_client_list
+            columns:
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: department_client_list_department_id_department_id
+                    references: department(id)
+              - column:
+                  name: client_list_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: department_client_list_client_list_id_equipment_id
+                    references: client(id)

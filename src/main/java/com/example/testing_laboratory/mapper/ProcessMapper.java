@@ -5,15 +5,14 @@ import com.example.testing_laboratory.dto.CleaningProcessDto;
 import com.example.testing_laboratory.dto.DeliveryDto;
 import com.example.testing_laboratory.dto.PaymentForWorkProcessDto;
 import com.example.testing_laboratory.dto.ProductionProcessDto;
-import com.example.testing_laboratory.entity.AbstractProcess;
+import com.example.testing_laboratory.entity.Process;
 import com.example.testing_laboratory.entity.CleaningProcess;
 import com.example.testing_laboratory.entity.DeliveryReportProcess;
 import com.example.testing_laboratory.entity.PaymentForWorkProcess;
 import com.example.testing_laboratory.entity.ProductionProcess;
 import org.mapstruct.Mapper;
-import org.mapstruct.MapperConfig;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(componentModel = "spring")
 public interface ProcessMapper {
 
     CleaningProcess convertCleaningProcessDtoToCleaningProcess(CleaningProcessDto cleaningProcessDto);
@@ -24,7 +23,7 @@ public interface ProcessMapper {
 
     PaymentForWorkProcess convertPaymentForWorkProcessDtoToPaymentForWorkProcess(PaymentForWorkProcessDto paymentForWorkProcessDto);
 
-    default AbstractProcessDto convertAbstractProcessToAbstractProcessDto(AbstractProcess process) {
+    default AbstractProcessDto convertAbstractProcessToAbstractProcessDto(Process process) {
         AbstractProcessDto abstractProcessDto = new AbstractProcessDto(process.getProcessStart(), process.getProcessEnd(), process.getEmployee());
         if (process instanceof CleaningProcess) {
             abstractProcessDto.setCleaningEquipment(((CleaningProcess) process).getCleaningEquipment());

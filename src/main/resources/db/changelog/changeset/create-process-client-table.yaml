@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-process-client
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: process_client
+            columns:
+              - column:
+                  name: abstract_process_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: process_client_abstract_process_id_process_id
+                    references: process(id)
+              - column:
+                  name: client_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: process_client_client_id_client_id
+                    references: client(id)

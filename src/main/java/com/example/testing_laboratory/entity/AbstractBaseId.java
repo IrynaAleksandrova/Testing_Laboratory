@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 @MappedSuperclass
-public abstract class AbstractEntity {
+public abstract class AbstractBaseId {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
