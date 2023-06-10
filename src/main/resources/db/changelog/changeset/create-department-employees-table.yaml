@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-department-employees
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: department_employees
+            columns:
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: department_employees_department_id_department_id
+                    references: department(id)
+              - column:
+                  name: employees_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: department_employees_employees_id_users_id
+                    references: users(id)

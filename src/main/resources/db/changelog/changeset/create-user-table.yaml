@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar (200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar (200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar (200)
+              - column:
+                  name: second_name
+                  type: varchar (200)
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users_department_id_department_id
+                    references: department(id)

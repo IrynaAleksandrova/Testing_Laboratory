@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-client
+      author: Iryna
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: nameClient
+                  type: varchar (200)
+              - column:
+                  name: qr_code
+                  type: varchar (200)
+              - column:
+                  name: internal_code
+                  type: varchar (50)
+              - column:
+                  name: inventory_number
+                  type: varchar (50)
+              - column:
+                  name: production
+                  type: varchar (500)
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: client_client_id_department_id
+                    references: department(id)
+              - column:
+                  name: last_payment_date
+                  type: TIMESTAMP
+              - column:
+                  name: last_delivery_date
+                  type: TIMESTAMP
+              - column:
+                  name: client_status
+                  type: varchar (50)
+              - column:
+                  name: is_process
+                  type: boolean
